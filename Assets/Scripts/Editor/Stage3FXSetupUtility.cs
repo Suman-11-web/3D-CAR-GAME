@@ -21,7 +21,10 @@ namespace CarGame.EditorTools
             }
             if (carObj == null)
             {
-                EditorUtility.DisplayDialog("Error", "Player car not found in scene. Run Stage 1 setup first!", "OK");
+                if (!Application.isBatchMode)
+                {
+                    EditorUtility.DisplayDialog("Error", "Player car not found in scene. Run Stage 1 setup first!", "OK");
+                }
                 return;
             }
 

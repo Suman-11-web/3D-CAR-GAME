@@ -13,11 +13,18 @@ namespace CarGame.EditorTools
             GameObject cityRoot = GameObject.Find("--- CITY_WORLD ---");
             if (cityRoot != null)
             {
-                if (EditorUtility.DisplayDialog("City Exists", "--- CITY_WORLD --- already exists. Rebuild?", "Rebuild", "Cancel"))
+                if (!Application.isBatchMode)
+                {
+                    if (EditorUtility.DisplayDialog("City Exists", "--- CITY_WORLD --- already exists. Rebuild?", "Rebuild", "Cancel"))
+                    {
+                        Undo.DestroyObjectImmediate(cityRoot);
+                    }
+                    else return;
+                }
+                else
                 {
                     Undo.DestroyObjectImmediate(cityRoot);
                 }
-                else return;
             }
 
             cityRoot = new GameObject("--- CITY_WORLD ---");

@@ -38,7 +38,7 @@ jobs:
             Library-Android-
             Library-
 
-      # 3. Build Android APK using GameCI standard builder
+      # 3. Build Android APK using GameCI
       - name: Run Unity Android Build
         uses: game-ci/unity-builder@v4
         env:
@@ -48,8 +48,8 @@ jobs:
         with:
           targetPlatform: Android
           unityVersion: 2022.3.20f1
-          buildName: SunriseHatchback_Simulator
-          androidExportType: 'androidPackage' # Generates .apk directly
+          buildMethod: CarGame.EditorTools.MasterProductionSceneBuilder.BuildAndroidAPKHeadless
+          androidExportType: 'androidPackage'
           androidSymbolType: 'none'
 
       # 4. Upload APK as GitHub Actions Artifact
@@ -60,15 +60,3 @@ jobs:
           path: build/Android/*.apk
           retention-days: 14
           if-no-files-found: error
-
-      # 5. Diagnostic Log Upload (only on failure)
-      - name: Upload Diagnostic Logs
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: Unity_Crash_Logs
-          path: |
-            /home/runner/.config/unity3d/Editor.log
-            /root/.config/unity3d/Editor.log
-            ./*.log
-          if-no-files-found: ignore

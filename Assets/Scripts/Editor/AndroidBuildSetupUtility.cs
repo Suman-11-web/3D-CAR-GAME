@@ -40,18 +40,21 @@ namespace CarGame.EditorTools
             }
             PlayerSettings.productName = "Sunrise Hatchback Simulator";
 
-            EditorUtility.DisplayDialog(
-                "Android Settings Configured",
-                "Successfully configured Android Build Settings:\n\n" +
-                "• Orientation: Landscape Left/Right\n" +
-                "• Scripting Backend: IL2CPP\n" +
-                "• Architecture: ARM64\n" +
-                "• Minimum API: Level 24 (Android 7.0)\n" +
-                "• Color Space: Linear (URP Wet Reflections)\n" +
-                "• Multithreaded Rendering: Enabled\n\n" +
-                "Ready for APK / AAB compilation!",
-                "Great!"
-            );
+            if (!Application.isBatchMode)
+            {
+                EditorUtility.DisplayDialog(
+                    "Android Settings Configured",
+                    "Successfully configured Android Build Settings:\n\n" +
+                    "• Orientation: Landscape Left/Right\n" +
+                    "• Scripting Backend: IL2CPP\n" +
+                    "• Architecture: ARM64\n" +
+                    "• Minimum API: Level 24 (Android 7.0)\n" +
+                    "• Color Space: Linear (URP Wet Reflections)\n" +
+                    "• Multithreaded Rendering: Enabled\n\n" +
+                    "Ready for APK / AAB compilation!",
+                    "Great!"
+                );
+            }
 
             Debug.Log("<color=green><b>[CarGame] Android Player Settings Configured for Production Release!</b></color>");
         }

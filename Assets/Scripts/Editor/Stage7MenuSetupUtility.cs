@@ -25,7 +25,10 @@ namespace CarGame.EditorTools
             GameObject canvasObj = GameObject.Find("HUD_Canvas");
             if (canvasObj == null)
             {
-                EditorUtility.DisplayDialog("Error", "HUD_Canvas not found. Please run Stage 2 setup first!", "OK");
+                if (!Application.isBatchMode)
+                {
+                    EditorUtility.DisplayDialog("Error", "HUD_Canvas not found. Please run Stage 2 setup first!", "OK");
+                }
                 return;
             }
 

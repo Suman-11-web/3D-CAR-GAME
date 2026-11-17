@@ -13,11 +13,18 @@ namespace CarGame.EditorTools
             GameObject trafficRoot = GameObject.Find("--- TRAFFIC_SYSTEM ---");
             if (trafficRoot != null)
             {
-                if (EditorUtility.DisplayDialog("Traffic System Exists", "--- TRAFFIC_SYSTEM --- already exists. Rebuild?", "Rebuild", "Cancel"))
+                if (!Application.isBatchMode)
+                {
+                    if (EditorUtility.DisplayDialog("Traffic System Exists", "--- TRAFFIC_SYSTEM --- already exists. Rebuild?", "Rebuild", "Cancel"))
+                    {
+                        Undo.DestroyObjectImmediate(trafficRoot);
+                    }
+                    else return;
+                }
+                else
                 {
                     Undo.DestroyObjectImmediate(trafficRoot);
                 }
-                else return;
             }
 
             trafficRoot = new GameObject("--- TRAFFIC_SYSTEM ---");

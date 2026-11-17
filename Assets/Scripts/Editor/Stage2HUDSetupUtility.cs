@@ -29,11 +29,18 @@ namespace CarGame.EditorTools
             GameObject hudCanvasObj = GameObject.Find("HUD_Canvas");
             if (hudCanvasObj != null)
             {
-                if (EditorUtility.DisplayDialog("HUD Canvas Exists", "HUD_Canvas already exists. Replace with new layout?", "Replace", "Cancel"))
+                if (!Application.isBatchMode)
+                {
+                    if (EditorUtility.DisplayDialog("HUD Canvas Exists", "HUD_Canvas already exists. Replace with new layout?", "Replace", "Cancel"))
+                    {
+                        Undo.DestroyObjectImmediate(hudCanvasObj);
+                    }
+                    else return;
+                }
+                else
                 {
                     Undo.DestroyObjectImmediate(hudCanvasObj);
                 }
-                else return;
             }
 
             hudCanvasObj = new GameObject("HUD_Canvas");
