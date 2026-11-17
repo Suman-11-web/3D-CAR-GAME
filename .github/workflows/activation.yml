@@ -18,5 +18,5 @@ jobs:
       - name: Upload Activation File
         uses: actions/upload-artifact@v4
         with:
-          name: Unity_v${{ steps.getUnityVersion.outputs.unityVersion }}.alf
+          name: unity-activation-file
           path: '**/*.alf'

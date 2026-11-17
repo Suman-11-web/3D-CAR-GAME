@@ -47,9 +47,8 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
-          androidAppBundle: false
+          androidExportType: 'androidPackage' # Generates .apk directly
           buildMethod: CarGame.EditorTools.AndroidQuickBuildUtility.BuildAndroidAPK
-          versioning: Semantic
 
       # 4. Upload APK as GitHub Actions Artifact
       - name: Upload APK Artifact
