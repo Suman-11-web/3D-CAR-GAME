@@ -28,7 +28,18 @@ jobs:
           lfs: true
           fetch-depth: 0
 
-      # 2. Cache Unity Library folder for faster subsequent builds
+      # 2. Verify License Secret Exists
+      - name: Check License Secret
+        if: ${{ env.UNITY_LICENSE == '' && env.UNITY_SERIAL == '' }}
+        run: |
+          echo "::error::UNITY_LICENSE secret is not found in your GitHub Repository Secrets!"
+          echo "Please follow the activation steps to add your free Unity Personal License."
+          exit 1
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+
+      # 3. Cache Unity Library folder for faster subsequent builds
       - name: Cache Unity Library
         uses: actions/cache@v4
         with:
@@ -38,7 +49,7 @@ jobs:
             Library-Android-
             Library-
 
-      # 3. Build Android APK using GameCI
+      # 4. Run Unity Android Build using GameCI
       - name: Run Unity Android Build
         uses: game-ci/unity-builder@v4
         env:
@@ -47,10 +58,11 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: Android
+          unityVersion: 2022.3.20f1
           androidExportType: 'androidPackage' # Generates .apk directly
           buildMethod: CarGame.EditorTools.AndroidQuickBuildUtility.BuildAndroidAPK
 
-      # 4. Upload APK as GitHub Actions Artifact
+      # 5. Upload APK as GitHub Actions Artifact
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
