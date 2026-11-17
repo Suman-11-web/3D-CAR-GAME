@@ -1,7 +1,7 @@
 name: Build Android APK 🚗📱
 
 on:
-  workflow_dispatch: # Allows manual trigger anytime from GitHub Actions UI
+  workflow_dispatch: # Manual trigger from GitHub Actions UI
   push:
     branches:
       - main
@@ -38,7 +38,7 @@ jobs:
             Library-Android-
             Library-
 
-      # 4. Run Unity Android Build using GameCI
+      # 3. Build Android APK using GameCI standard builder
       - name: Run Unity Android Build
         uses: game-ci/unity-builder@v4
         env:
@@ -48,16 +48,27 @@ jobs:
         with:
           targetPlatform: Android
           unityVersion: 2022.3.20f1
+          buildName: SunriseHatchback_Simulator
           androidExportType: 'androidPackage' # Generates .apk directly
-          buildMethod: CarGame.EditorTools.AndroidQuickBuildUtility.BuildAndroidAPK
+          androidSymbolType: 'none'
 
-      # 5. Upload APK as GitHub Actions Artifact
+      # 4. Upload APK as GitHub Actions Artifact
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: SunriseHatchback_Simulator_APK
-          path: |
-            Builds/Android/*.apk
-            build/Android/*.apk
+          path: build/Android/*.apk
           retention-days: 14
           if-no-files-found: error
+
+      # 5. Diagnostic Log Upload (only on failure)
+      - name: Upload Diagnostic Logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Unity_Crash_Logs
+          path: |
+            /home/runner/.config/unity3d/Editor.log
+            /root/.config/unity3d/Editor.log
+            ./*.log
+          if-no-files-found: ignore
